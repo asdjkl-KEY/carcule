@@ -1,0 +1,59 @@
+
+.form-input-group {
+    margin-bottom: 1rem;
+    width: 100%;
+}
+.form-input-group label {
+    display: block;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    width: 100%;
+}
+.form-input-group input {
+    border-radius: 0.25rem;
+    display: block;
+    font-size: 1rem;
+    padding: 0.5rem;
+    width: 100%;
+    outline: none;
+}
+.form-input-style-light {
+    background: #e8e8e8;
+    color: #333;
+    border: 1px solid #333;
+}
+.form-input-style-dark {
+    background: #fafafa;
+    color: #333;
+    border: none;
+}
+.form-input-style-gray {
+    background: #cacaca;
+    color: #333;
+}
+.form-input-style-light:focus-visible {
+    border: #4b86d4 1px solid;
+    box-shadow: 0 0 6px #4b86d4;
+}
+.form-input-style-dark:focus-visible {
+    box-shadow: 0 0 6px #4b86d4;
+}
+.form-input-style-gray:focus-visible {
+    box-shadow: 0 0 6px #333
+}
+.form-input-group .label-default {
+    text-align: left;
+}
+.form-input-group .label-center {
+    text-align: center;
+}
+.form-input-group .label-right {
+    text-align: right;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 0; /* Asegura que no haya espacio en blanco */
+}

@@ -1,0 +1,23 @@
+.panel {
+    display: flex;
+    flex-direction: column;
+}
+.panel-center {
+    align-items: center;
+    justify-content: center;
+}
+.panel-column-center {
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.panel-row-center {
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+}
+.panel-row-between {
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+}

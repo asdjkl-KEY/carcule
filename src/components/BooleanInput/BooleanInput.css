@@ -1,0 +1,47 @@
+/* Estilos del interruptor */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 20px;
+  }
+
+  .switch input[type="checkbox"] {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  /* Estilos del fondo del interruptor */
+  .switch .slider {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: gray;
+    border-radius: 30px;
+    transition: 0.4s;
+  }
+  
+  /* Estilos del interruptor cuando está activado */
+  .switch .slider:before {
+    position: absolute;
+    content: "";
+    height: 12px;
+    width: 12px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    border-radius: 50%;
+    transition: 0.4s;
+  }
+  
+  /* Cambio de estilo cuando el interruptor está activado */
+  .switch input:checked + .slider {
+    background-color: #2196F3;
+  }
+  
+  .switch input:checked + .slider:before {
+    transform: translateX(20px);
+  }

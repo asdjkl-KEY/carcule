@@ -1,0 +1,29 @@
+.loading-container {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.loading-container.theme-dark {
+    background: #212121;
+    color: #fafafa;
+}
+.loading-container.theme-light {
+    background: #fafafa;
+    color: #212121;
+}
+.loading-container .loading-icon{
+    font-size: 150px;
+    animation: spin 1.1s ease-in-out infinite;
+    margin-top: 24px;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

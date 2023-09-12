@@ -1,0 +1,41 @@
+.thumbnail-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+.tmb-container-size-default {
+    height: 300px;
+}
+.tmb-container-size-small {
+    height: 250px;
+}
+.tmb-container-size-verysmall {
+    height: 100px;
+}
+.tmb-container-size-large {
+    height: 550px;
+}
+.tmb-container-size-big {
+    height: 720px;
+}
+.tmb-size-default {
+    height: 200px;
+    width: 200px;
+}
+.tmb-size-small {
+    width: 170px;
+    height: 170px;
+}
+.tmb-size-verysmall {
+    width: 80px;
+    height: 80px;
+}
+.tmb-size-large {
+    width: 380px;
+    height: 380px;
+}
+.tmb-size.big {
+    width: 600px;
+    height: 600px;
+}

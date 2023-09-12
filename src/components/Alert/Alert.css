@@ -1,0 +1,43 @@
+.alert-container {
+    width: 100%;
+    padding: 12px;
+}
+.alert-type-danger {
+    background-color: #fc8b83;
+    border: 1px solid #9c2921;
+}
+.alert-type-warning {
+    background-color: #f5d99d;
+    border: 1px solid #cf7016;
+}
+.alert-type-success {
+    background-color: #a8e986;
+    border: 1px solid #3c763d;
+}
+.alert-type-info {
+    background-color: #809dc4;
+    border: 1px solid #31708f;
+}
+.alert-message-danger {
+    color: #9c2921;
+}
+.alert-message-warning {
+    color: #ec6212;
+}
+.alert-message-success {
+    color: #3c763d;
+}
+.alert-message-info {
+    color: #005a86;
+}
+.alert {
+    border-radius: 0.2rem;
+    width: 100%;
+    padding: 12px;
+    max-height: 75px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.alert-message {
+    word-wrap: break-word;
+}

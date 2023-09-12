@@ -1,0 +1,114 @@
+.menu-container {
+    height: 100%;
+    display: flex;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 50px;
+    z-index: 50;
+}
+.menu-bars {
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin: 12px;
+    color: #eee;
+    opacity: 0;
+}
+.menu-list {
+    width: 100%;
+    margin: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.menu-item {
+    text-align: center;
+    font-size: 24px;
+    width: 100%;
+    position: relative;
+    padding: 12px;
+    width: 100%;
+    height: 50px;
+}
+.menu-item::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 12;
+}
+.menu-item-theme-dark:hover {
+    background: #191919;
+}
+.menu-item-theme-light:hover {
+    background: #aaa;
+}
+.menu-item-dark-selected {
+    background: #191919;
+}
+.menu-item-dark-selected::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 4px;
+    height: 100%;
+    background: #aaa;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+}
+.menu-item-light-selected {
+    background: #aaa;
+}
+.menu-item-light-selected::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 4px;
+    height: 100%;
+    background: #191919;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+}
+.menu-theme-dark {
+    background: #292929;
+    color: #fafafa;
+}
+.menu-theme-light {
+    background: #ddd;
+    color: #333;
+}
+.show-on-toggle{
+    display: none;
+}
+#logout {
+    color: #b31010;
+}
+
+@media screen and (max-width: 764px){
+    .menu-container {
+        width: 250px;
+    }
+    .menu-open {
+        left: 0;
+    }
+    .menu-closed {
+        left: -250px;
+    }
+    .menu-item {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 12px;
+    }
+    .show-on-toggle {
+        text-align: center;
+        display: inline-block;
+        font-size: 20px;
+    }
+}

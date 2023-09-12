@@ -1,0 +1,36 @@
+.toggle {
+    border-radius: 6px;
+    padding: 14px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    font-size: 22px;
+    background: #fafafa90;
+    width: 32px;
+    height: 32px;
+    margin: 12px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 20;
+    display: none;
+}
+.toggle::before {
+    width: 100%;
+    height: 100%;
+    z-index: 12;
+}
+.toggle-bars-active, .toggle-close-active {
+    opacity: 1;
+    position: absolute;
+}
+.toggle-bars-inactive, .toggle-close-inactive {
+    opacity: 0;
+    position: absolute;
+}
+
+@media screen and (max-width: 764px){
+    .toggle {
+        display: flex;
+    }
+}

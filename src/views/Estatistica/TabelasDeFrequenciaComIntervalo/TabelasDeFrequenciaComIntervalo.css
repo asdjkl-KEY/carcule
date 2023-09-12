@@ -1,0 +1,9 @@
+.tdf-container.theme-dark {
+    color: #fafafa;
+}
+.tdf-container.theme-light {
+    color: #212121;
+}
+.tdf-resultado.com-intervalo table input {
+    max-width: 80px;
+}

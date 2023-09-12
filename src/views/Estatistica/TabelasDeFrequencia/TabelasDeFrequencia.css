@@ -1,0 +1,83 @@
+.tdf-container {
+  overflow-y: auto;
+  height: 100vh;
+}
+.tdf-container.theme-dark {
+    color: #fafafa;
+}
+.dtf-container.theme-light{
+    color: #212121;
+}
+.tdf-informacao {
+    width: 400px;
+    margin: auto;
+    padding-top: 124px;
+}
+.tdf-informacao input {
+    text-align: center;
+}
+.tdf-tabela {
+    width: 500px;
+    margin: auto;
+    margin-top: 0;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 4px 0 32px 0;
+}
+.tdf-tabela table {
+    margin-bottom: 24px;
+}
+.tdf-tabela input {
+    text-align: center;
+    outline: none;
+    border: none;
+    padding: 4px;
+    max-width: 120px;
+}
+.tdf-opcao{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 6px 0;
+    width: 400px;
+}
+.tdf-resultado {
+    overflow-y: auto;
+    padding: 6px 0 32px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.tdf-resultado table {
+    margin-bottom: 24px;
+}
+.tdf-resultado table td {
+    padding: 4px;
+}
+.tdf-resultado table td input {
+    text-align: center;
+    outline: none;
+    border: none;
+    padding: 4px;
+    max-width: 120px;
+}
+.tdf-resultado-informacoes {
+    width: 400px;
+    margin: auto;
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+}
+.tdf-resultado-informacao {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 24px;
+}
+.return-back {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    cursor: pointer;
+}

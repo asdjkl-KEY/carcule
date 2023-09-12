@@ -1,0 +1,15 @@
+.matrizes-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+.matrizes-container.theme-dark {
+    background-color: #1e1e1e;
+    color: #fff;
+}
+.matrizes-container.theme-light {
+    background-color: #fff;
+    color: #1e1e1e;
+}
