@@ -5,6 +5,7 @@
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
+    margin-bottom: 16px;
 }
 .button-container {
     width: 100%;

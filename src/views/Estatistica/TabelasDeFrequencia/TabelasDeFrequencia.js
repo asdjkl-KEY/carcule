@@ -242,6 +242,14 @@ const TabelasDeFrequencia = () => {
                 />
             </div>
             }
+            <div id='tabela-de-formulas' title={t('tdf.informacao.tabeladeformulas')}>
+                <Button
+                    color={'red'}
+                    orient={'right'}
+                    size={'normal'}
+                    text={<FontAwesomeIcon icon={'book'} />}
+                />
+            </div>
             {processo==='informacao' && 
             <div className={`tdf-informacao`}>
                 {erro!==null && <Alert type={erro.type} message={erro.text} />}

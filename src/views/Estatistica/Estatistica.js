@@ -4,16 +4,17 @@ import { Theme } from '../../configs/settings';
 import { t } from '../../configs/lang';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-//components
+import Button from '../../components/Button/Button';
 
+//components
 const conteudos = [
     {
-        id: 1,
+        id: 2,
         name: t('estatistica.conteudos.tabelasdefrequencia'),
         component: 'tabelas_de_frequencia'
     },
     {
-        id: 2,
+        id: 3,
         name: t('estatistica.conteudos.tabelascomintervalo'),
         component: 'tabelas_com_intervalo'
     }
@@ -21,7 +22,13 @@ const conteudos = [
 
 const Estatistica = () => {
 
-    function selecionarConteudo(e){
+    function openModal(id){
+        let modal = document.getElementById(id);
+        modal.classList.add('show-true');
+        modal.classList.remove('show-false');
+    }
+
+    function selecionarConteudo(e) {
         let component = e.target.id;
         console.log(component); // TODO: remover esse console.log
         localStorage.setItem('dashboard.menu', 'estatistica.'+component);
@@ -32,6 +39,15 @@ const Estatistica = () => {
         <div className={`estatistica-container theme-${Theme??'light'}`}>
             <div id='estatistica-header'>
                 <h1>{t('estatistica.escolhaoconteudo')}</h1>
+            </div>
+            <div id='tabela-de-formulas' title={t('tdf.informacao.tabeladeformulas')}>
+                <Button
+                    color={'red'}
+                    orient={'right'}
+                    size={'normal'}
+                    text={<FontAwesomeIcon icon={'book'} />}
+                    onClick={() => openModal('modal-tabela-de-formulas')}
+                />
             </div>
             <div id='estatistica-body'>
                 {conteudos.map((conteudo, index) => {

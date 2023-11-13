@@ -12,6 +12,7 @@ const portuguese = {
             conteudos: {
                 tabelasdefrequencia: 'Tabelas de Frequência sem intervalo',
                 tabelascomintervalo: 'Tabelas de Frequência com intervalo',
+                dicionariodeformulas: 'Dicionário de Fórmulas',
             },
             escolhaoconteudo: 'Escolha o conteúdo'
         },
@@ -20,10 +21,19 @@ const portuguese = {
             informacao: {
                 linhas: 'Digite a quantidade de linhas da tabela',
                 botao: 'Criar Tabela',
+                botao2: 'Informar valores',
+                botao3: 'Criar Tabela',
                 erro: {
                     linhaszero: 'O número de linhas deve ser maior que zero e menor ou igual a 20'
                 },
-                carcular: 'Carcular',
+                carcular: 'Calcular',
+                label: 'Digite os valores separados por espaços',
+                tabeladeformulas: 'Tabela de Fórmulas',
+            },
+            separatrizes: {
+                quartil: 'Quartil',
+                percentil: 'Percentil',
+                decil: 'Decil'
             },
             opcoes: {
                 media: 'Média aritmética',
@@ -48,10 +58,23 @@ const portuguese = {
                 Fi: 'Fi',
                 fri: 'fri',
                 FRi: 'FRi',
+                total: 'Total',
+                xivsfi: 'xi*fi',
+                somaparadesviomedio: '|xi - X̅| * fi',
+                somaparavariancia: '(xi - X̅)² * fi',
+                posicao: 'Posição',
+                linf: 'Limite inferior',
+                fant: 'FANT',
+                fmediana: 'Fmediana',
+                fquartil: 'Fquartil',
+                fpercentil: 'Fpercentil',
+                fdecil: 'Fdecil',
+                h: 'h',
+                fonte: 'Fonte:'
             }
         },
         loading: {
-            carculando: 'Carculando...'
+            carculando: 'Calculando...'
         },
         configuracoes: {
             title: 'Configurações',

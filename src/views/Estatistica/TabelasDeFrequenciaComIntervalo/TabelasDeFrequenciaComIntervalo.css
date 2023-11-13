@@ -7,3 +7,27 @@
 .tdf-resultado.com-intervalo table input {
     max-width: 80px;
 }
+.tdf-informacao2 {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+}
+.separatrizes {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 84px;
+    gap: 64px;
+}
+.separatrizes > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+.separatrizes > div > table {
+    text-align: center;
+}

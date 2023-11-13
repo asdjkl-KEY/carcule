@@ -1,0 +1,35 @@
+.modal-container {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    transition: 0.3s ease-in-out;
+}
+
+.modal-container.show-false {
+    top: -100vh;
+    z-index: -1;
+}
+.modal-container.show-true {
+    top: 0;
+    z-index: 9999;
+}
+
+.modal-container.theme-dark {
+    background: #fafafa90;
+}
+.modal-container.theme-light {
+    background: #00000090;
+}
+
+.modal-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 12px;
+}
+.modal-content {
+    width: 100%;
+}

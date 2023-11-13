@@ -4,16 +4,27 @@ import { t } from '../../../configs/lang';
 import { Theme } from '../../../configs/settings';
 import './TabelasDeFrequenciaComIntervalo.css';
 
+
 //componentes
 import FormInputGroup from '../../../components/FormInputGroup/FormInputGroup';
 import Button from '../../../components/Button/Button';
 import Alert from '../../../components/Alert/Alert';
 import BooleanInput from '../../../components/BooleanInput/BooleanInput';
 import Loading from '../../../components/Loading/Loading';
+import TextAreaGroup from '../../../components/TextAreaGroup/TextAreaGroup';
+import CurveChart from '../../../components/CurveChart/CurveChart';
+import ChartBar from '../../../components/ChartBar/ChartBar';
 
-import TabelaDeDistribuicaoComIntervalo from '../../../classes/TabelaDeDistribuicaoComIntervalo';
+//FUNÇÕES
+import mudarBooleano from './helpers/mudarBooleano';
+import mudarValor from './helpers/mudarValor';
+import criarTabela from './helpers/criarTabela';
+import carcularTabela from './helpers/carcularTabela';
+import returnBack from './helpers/returnBack';
+import criarTabelaComValores from './helpers/criarTabelaComValores';
+import updateSeparatriz from './helpers/updateSeparatriz';
 
-const TabelasDeFrequenciaComIntervalo = () => {
+const TabelasDeFrequenciaComIntervalo = ({classes, intervalos, fi}) => {
     let [processo, setProcesso] = useState('informacao');
     let [linhas, setLinhas] = useState(0);
     let [linhasValor, setLinhasValor] = useState([]);
@@ -22,6 +33,22 @@ const TabelasDeFrequenciaComIntervalo = () => {
     let [informacoes, setInformacoes] = useState([])
     let [infos, setInfos] = useState([])
     let [input, setInput] = useState(null);
+    let [textoarea, setTextoarea] = useState('');
+    let [footer, setFooter] = useState(<theaad></theaad>)
+    let [tabela_mediana, setTabela_mediana] = useState([])
+    let [tabelaSeparatrizes, setTabelaSeparatrizes] = useState(null);
+    let  [quartil, setQuartil] = useState(0);
+    let [percentil, setPercentil] = useState(0);
+    let [decil, setDecil] = useState(0);
+    let [fonte, setFonte] = useState("ISAI S.A. - 2023");
+    let [coeficiente_de_curtose, set_coeficiente_de_curtose] = useState({valor: 0, curva: ''});
+    let [barchart_data, set_barchart_data] = useState({intervalos: [], fi: []});
+    
+
+    if(classes && intervalos && fi){
+        setLinhas(classes.lenght);
+        criarTabela(linhas, setMessage, linhasValor, setLinhasValor, selectInput, mudarValor, setInput, setTabelaBody, setProcesso, t, intervalos, fi)
+    }
 
     useEffect(() => {
         document.addEventListener('keydown', (e) => {
@@ -50,41 +77,6 @@ const TabelasDeFrequenciaComIntervalo = () => {
     function selectInput(e){
         document.getElementById(e.target.id).select();
     }
-
-    function mudarBooleano(key, e){
-        let value = e.target.checked;
-        console.log(key)
-        console.log(media)
-        switch(key){
-            case 'media':
-                setMedia(value);
-                break;
-            case 'desvio_medio':
-                setDesvioMedio(value);
-                break;
-            case 'variancia':
-                setVariancia(value);
-                break;
-            case 'desvio_padrao':
-                setDesvioPadrao(value);
-                break;
-            case 'moda':
-                setModa(value);
-                break;
-            case 'mediana':
-                setMediana(value);
-                break;
-            case 'coeficiente_de_variacao':
-                setCoeficienteDeVariacao(value);
-                break;
-            case 'representacao':
-                setRepresentacao(value);
-                break;
-            default:
-                break;
-        }
-    }
-
     let [media, setMedia] = useState(true);
     let [desvio_medio, setDesvioMedio] = useState(true);
     let [variancia, setVariancia] = useState(true);
@@ -97,136 +89,30 @@ const TabelasDeFrequenciaComIntervalo = () => {
     let opcoes = [[media,'media'],[desvio_medio,'desvio_medio'],[variancia,'variancia'],[desvio_padrao,'desvio_padrao'],[moda,'moda'],[mediana,'mediana'],[coeficiente_de_variacao,'coeficiente_de_variacao'],[representacao, 'representacao']].map(opcao => {
         return <div className='tdf-opcao'>
             <span>{t(`tdf.opcoes.${opcao[1]}`)}</span>
-            <BooleanInput dft={true} key={opcao[1]} value={opcao[0]} func={(e) => {let key = `${opcao[1]}`; mudarBooleano(key, e);}} />
+            <BooleanInput dft={true} key={opcao[1]} value={opcao[0]} func={(e) => {let key = `${opcao[1]}`; mudarBooleano(key, e, [setMedia, setDesvioMedio,setVariancia,setDesvioPadrao,setModa,setMediana,setCoeficienteDeVariacao,setRepresentacao], media);}} />
         </div>
     })
-
-    function mudarValor(e){
-        let key = e.target.id;
-        let value = +e.target.value;
-        let linha = +key.split('-')[1];
-        let coluna = key.split("-")[0];
-        switch(coluna){
-            case 'classe':
-                linhasValor[linha][0] = value;
-                break;
-            case 'intervalomenor':
-                linhasValor[linha][1][0] = value;
-                break;
-            case 'intervalormaior':
-                linhasValor[linha][1][1] = value;
-                break;
-            case 'fi':
-                linhasValor[linha][2] = value;
-                break;
-            default:
-                break;
-        }
-        setLinhasValor(linhasValor);
-        setInput(key);
-    }
-
-    function criarTabela(){
-        if(linhas <= 0 || linhas > 20 || !linhas){
-            setMessage({
-                content: t('tdf.informacao.erro.linhaszero'),
-                type: 'danger'
-            });
-            setTimeout(() => {
-                setMessage(null)
-            }, 5000)
-        } else {
-            let lines = +linhas;
-            let linesValue = [];
-            for(let i=0; i<lines; i++){
-                linesValue.push([i, [0, 0], 0])
-            }
-            linhasValor = linesValue;
-            setLinhasValor(linhasValor);
-            linesValue = linesValue.map((e, i) => {
-                return <tr>
-                    <td key={`classe-${i}`}><input onFocus={selectInput} id={`classe-${i}`} onChange={mudarValor} type='number' defaultValue={linhasValor[i][0]}/></td>
-                    <td key={`intervalomenor-${i}`}><input onFocus={selectInput} id={`intervalomenor-${i}`} onChange={mudarValor} type='number' defaultValue={linhasValor[i][1][0]}/></td>
-                    <td key={`intervalormaior-${i}`}><input onFocus={selectInput} id={`intervalormaior-${i}`} onChange={mudarValor} type='number' defaultValue={linhasValor[i][1][1]}/></td>
-                    <td key={`fi-${i}`}><input onFocus={selectInput} id={`fi-${i}`} onChange={mudarValor} type='number' defaultValue={linhasValor[i][2]}/></td>
-                </tr>
-            });
-            setTabelaBody(linesValue);
-            setProcesso('tabela')
-        }
-    }
-
-    function carcularTabela(){
-        setProcesso('calculando')
-        let classes = linhasValor.map(e => e[0]);
-        let intervalo = linhasValor.map(e => e[1]);
-        let fi = linhasValor.map(e => e[2]);
-        let tdf = new TabelaDeDistribuicaoComIntervalo({classes, intervalo, fi}).formatar();
-        let inf = []
-        for(let i=0; i<tdf.lines; i++){
-            inf.push((<tr>
-                <td><input value={tdf.tabela.classes[i]} readOnly={true}/></td>
-                <td><input value={(tdf.tabela.intervalo[i][0].toFixed(4)+'').replace(".", ',')} readOnly={true}/></td>
-                <td><input value={(tdf.tabela.intervalo[i][1].toFixed(4)+'').replace(".", ',')} readOnly={true}/></td>
-                <td><input value={(tdf.tabela.xi[i].toFixed(4)+'').replace(".", ',')} readOnly={true}/></td>
-                <td><input value={(tdf.tabela.fi[i].toFixed(4)+'').replace(".", ',')} readOnly={true}/></td>
-                <td><input value={(tdf.tabela.Fi[i].toFixed(4)+'').replace(".", ',')} readOnly={true}/></td>
-                <td><input value={(tdf.tabela.fri[i].toFixed(4)+'').replace(".", ',')} readOnly={true}/></td>
-                <td><input value={(tdf.tabela.FRi[i].toFixed(4)+'').replace(".", ',')} readOnly={true}/></td>
-            </tr>))
-        }
-        setInformacoes(inf);
-        let opc = [
-                [media, 'media'],
-                [desvio_medio, 'desvio_medio'],
-                [variancia, 'variancia'],
-                [desvio_padrao, 'desvio_padrao'],
-                [moda, 'moda'],
-                [mediana, 'mediana'],
-                [coeficiente_de_variacao, 'coeficiente_de_variacao'],
-                [representacao, 'representacao']
-            ]
-            opc = (opc.map(opcao => {
-                if(opcao[0]){
-                    return <div className='tdf-resultado-informacao'>
-                        <span>{t(`tdf.opcoes.${opcao[1]}`)}:</span> <b>{`${typeof tdf[opcao[1]]==='number'?(tdf[opcao[1]].toFixed(4)+'').replace(".", ','):tdf[opcao[1]]}`}</b>
-                    </div>
-                } else {
-                    return null;
-                }
-            })).filter(opcao => opcao!==null)
-            setInfos(opc)
-        setTimeout(() => {
-            setProcesso('resultado')
-        }, 1000)
-    }
-    function returnBack(){
-        let backs = {
-            informacao: 'informacao',
-            tabela: 'informacao',
-            calculando: 'tabela',
-            resultado: 'tabela'
-        }
-        setProcesso(backs[processo]);
-        if(processo==='tabela'){
-            setLinhasValor([]);
-            setTabelaBody([]);
-            setLinhas(0);
-        }
-    }
-
+    // Elemento JSX
     return(
         <div className={`tdf-container theme-${Theme}`}>
             {processo!=='informacao' && 
             <div id='return-back'>
                 <Button
                    text={<FontAwesomeIcon icon='arrow-left'/>}
-                   color={'green'}
+                   color={'blue'}
                    orient={'left'}
-                   onClick={returnBack}
+                   onClick={() => { returnBack(processo, setProcesso, setLinhasValor, setTabelaBody, setLinhas) }}
                 />
             </div>
             }
+            <div id='tabela-de-formulas' title={t('tdf.informacao.tabeladeformulas')}>
+                <Button
+                    color={'red'}
+                    orient={'right'}
+                    size={'normal'}
+                    text={<FontAwesomeIcon icon={'book'} />}
+                />
+            </div>
             {processo === 'informacao' && 
             <div className={'tdf-informacao'}>
                 {message && <Alert message={message.content} type={message.type} />}
@@ -243,9 +129,36 @@ const TabelasDeFrequenciaComIntervalo = () => {
                     orient={'center'}
                     size='large'
                     text={t('tdf.informacao.botao')}
-                    onClick={criarTabela}
+                    onClick={() => { criarTabela(linhas, setMessage, linhasValor, setLinhasValor, selectInput, mudarValor, setInput, setTabelaBody, setProcesso, t) }}
+                />
+                <Button
+                    color={'green'}
+                    orient={'center'}
+                    size={'large'}
+                    text={t('tdf.informacao.botao2')}
+                    onClick={() => { setProcesso('informacao2') }}
                 />
             </div>
+            }
+            {
+                processo === 'informacao2' && 
+                <div className={`tdf-informacao2`}>
+                    <TextAreaGroup 
+                        id={'informacao2'}
+                        label={t('tdf.informacao.label')}
+                        readOnly={false}
+                        type={'expanded'}
+                        func={(e) => { setTextoarea(e.target.value.trim()) }}
+                        placeHolder={'1 2 3 4 5 6 7 8 9'}
+                    />
+                    <Button
+                        color={'green'}
+                        orient={'center'}
+                        size={'large'}
+                        text={t('tdf.informacao.botao3')}
+                        onClick={(e) => { criarTabelaComValores(textoarea, [setMessage, linhasValor, setLinhasValor, selectInput, mudarValor, setInput, setTabelaBody, setProcesso, t]) }}
+                    />
+                </div>
             }
             {processo === 'calculando' && <Loading message={t('loading.carculando')}/>}
             {
@@ -271,7 +184,7 @@ const TabelasDeFrequenciaComIntervalo = () => {
                         text={t('tdf.informacao.carcular')}
                         orient={'center'}
                         size={'large'}
-                        onClick={carcularTabela}
+                        onClick={() => { carcularTabela(setProcesso, linhasValor, setInformacoes, [media, desvio_medio, variancia, desvio_padrao, moda, mediana, coeficiente_de_variacao, representacao], setInfos, t, setFooter, setTabela_mediana, setTabelaSeparatrizes, fonte, set_coeficiente_de_curtose, set_barchart_data)}}
                     />
                 </div>
             }
@@ -287,13 +200,173 @@ const TabelasDeFrequenciaComIntervalo = () => {
                             <th>{t('tdf.tabela.Fi')}</th>
                             <th>{t('tdf.tabela.fri')}</th>
                             <th>{t('tdf.tabela.FRi')}</th>
+                            <th>{t('tdf.tabela.xivsfi')}</th>
+                            <th>{t('tdf.tabela.somaparadesviomedio')}</th>
+                            <th>{t('tdf.tabela.somaparavariancia')}</th>
                         </tr>
                     </thead>
                     <tbody>
                         {informacoes}
                     </tbody>
+                    {footer}
                 </table>
+                <table border={1}>
+                    <thead>
+                        <tr>
+                            <th colSpan={2}>{t('tdf.opcoes.mediana')}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {tabela_mediana}
+                    </tbody>
+                </table>
+                <div className='separatrizes'>
+                    <FormInputGroup
+                        inputStyle={'light'}
+                        label={t('tdf.separatrizes.quartil')}
+                        labelOrient={'center'}
+                        name={'quartil'}
+                        type={'number'}
+                        value={''}
+                        onChange={(e) => { updateSeparatriz(e, setQuartil)}}
+                        textAlign={'center'}
+                    />
+                    <FormInputGroup
+                        inputStyle={'light'}
+                        label={t('tdf.separatrizes.percentil')}
+                        labelOrient={'center'}
+                        name={'percentil'}
+                        type={'number'}
+                        value={''}
+                        onChange={(e) => { updateSeparatriz(e, setPercentil)}}
+                        textAlign={'center'}
+                    />
+                    <FormInputGroup
+                        inputStyle={'light'}
+                        label={t('tdf.separatrizes.decil')}
+                        labelOrient={'center'}
+                        name={'decil'}
+                        type={'number'}
+                        value={''}
+                        onChange={(e) => { updateSeparatriz(e, setDecil)}}
+                        textAlign={'center'}
+                    />
+                </div>
+                <div className='separatrizes'>
+                    <div>
+                        { quartil>0 && quartil<4 &&
+                        <table border={1}>
+                            <thead>
+                                <tr>
+                                    <th colSpan={2}>{t('tdf.separatrizes.quartil')}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{t('tdf.tabela.posicao')}</td>
+                                    <td>{tabelaSeparatrizes.quartil[quartil-1].posicao}</td>
+                                </tr>
+                                <tr>
+                                    <td>{t('tdf.tabela.fant')}</td>
+                                    <td>{tabelaSeparatrizes.quartil[quartil-1].fant}</td>
+                                </tr>
+                                <tr>
+                                    <td>{t('tdf.tabela.linf')}</td>
+                                    <td>{tabelaSeparatrizes.quartil[quartil-1].linf}</td>
+                                </tr>
+                                <tr>
+                                    <td>{t('tdf.tabela.fquartil')}</td>
+                                    <td>{tabelaSeparatrizes.quartil[quartil-1].fquartil}</td>
+                                </tr>
+                                <tr>
+                                    <td>{t('tdf.tabela.h')}</td>
+                                    <td>{tabelaSeparatrizes.quartil[quartil-1].h}</td>
+                                </tr>
+                                <tr>
+                                    <td colSpan={2}>{tabelaSeparatrizes.quartil[quartil-1].q.toFixed(2)}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        }
+                    </div>
+                    <div>
+                        { percentil>0 && percentil<100 &&
+                        <table border={1}>
+                            <thead>
+                                <tr>
+                                    <th colSpan={2}>{t('tdf.separatrizes.percentil')}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{t('tdf.tabela.posicao')}</td>
+                                    <td>{tabelaSeparatrizes.percentil[percentil-1].posicao}</td>
+                                </tr>
+                                <tr>
+                                    <td>{t('tdf.tabela.fant')}</td>
+                                    <td>{tabelaSeparatrizes.percentil[percentil-1].fant}</td>
+                                </tr>
+                                <tr>
+                                    <td>{t('tdf.tabela.linf')}</td>
+                                    <td>{tabelaSeparatrizes.percentil[percentil-1].linf}</td>
+                                </tr>
+                                <tr>
+                                    <td>{t('tdf.tabela.fpercentil')}</td>
+                                    <td>{tabelaSeparatrizes.percentil[percentil-1].fpercentil}</td>
+                                </tr>
+                                <tr>
+                                    <td>{t('tdf.tabela.h')}</td>
+                                    <td>{tabelaSeparatrizes.percentil[percentil-1].h}</td>
+                                </tr>
+                                <tr>
+                                    <td colSpan={2}>{tabelaSeparatrizes.percentil[percentil-1].p.toFixed(2)}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        }
+                    </div>
+                    <div>
+                        { decil>0 && decil<10 &&
+                        <table border={1}>
+                            <thead>
+                                <tr>
+                                    <th colSpan={2}>{t('tdf.separatrizes.decil')}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{t('tdf.tabela.posicao')}</td>
+                                    <td>{tabelaSeparatrizes.decil[decil-1].posicao}</td>
+                                </tr>
+                                <tr>
+                                    <td>{t('tdf.tabela.fant')}</td>
+                                    <td>{tabelaSeparatrizes.decil[decil-1].fant}</td>
+                                </tr>
+                                <tr>
+                                    <td>{t('tdf.tabela.linf')}</td>
+                                    <td>{tabelaSeparatrizes.decil[decil-1].linf}</td>
+                                </tr>
+                                <tr>
+                                    <td>{t('tdf.tabela.fdecil')}</td>
+                                    <td>{tabelaSeparatrizes.decil[decil-1].fdecil}</td>
+                                </tr>
+                                <tr>
+                                    <td>{t('tdf.tabela.h')}</td>
+                                    <td>{tabelaSeparatrizes.decil[decil-1].h}</td>
+                                </tr>
+                                <tr>
+                                    <td colSpan={2}>{tabelaSeparatrizes.decil[decil-1].d.toFixed(2)}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        }
+                    </div>
+                </div>
                 {infos.length > 0 && <div className='tdf-resultado-informacoes'>{infos}</div>}
+                <div style={{display: 'flex'}}>
+                    <CurveChart curva={coeficiente_de_curtose.curva} valor={coeficiente_de_curtose.valor} />
+                    <ChartBar intervalos={barchart_data.intervalos} frecuencia_absoluta={barchart_data.fi} />
+                </div>
             </div>
             }
         </div>

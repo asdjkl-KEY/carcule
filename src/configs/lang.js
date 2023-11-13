@@ -13,6 +13,7 @@ export const t = (text)=>{
     let txt = text.split(".");
     for(let tx of txt){
         translate = translate[tx];
+        if(translate === undefined) return text;
     }
     return translate;
 }
