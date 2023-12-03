@@ -14,6 +14,7 @@ import Loading from '../../../components/Loading/Loading';
 import TextAreaGroup from '../../../components/TextAreaGroup/TextAreaGroup';
 import CurveChart from '../../../components/CurveChart/CurveChart';
 import ChartBar from '../../../components/ChartBar/ChartBar';
+import CurveChartAssimetric from '../../../components/CurveChart/CurveChartAssimetric';
 
 //FUNÇÕES
 import mudarBooleano from './helpers/mudarBooleano';
@@ -40,9 +41,11 @@ const TabelasDeFrequenciaComIntervalo = ({classes, intervalos, fi}) => {
     let  [quartil, setQuartil] = useState(0);
     let [percentil, setPercentil] = useState(0);
     let [decil, setDecil] = useState(0);
-    let [fonte, setFonte] = useState("ISAI S.A. - 2023");
+    let [fonte, setFonte] = useState("Copyright (c) ISAI MEDINA - 2023");
     let [coeficiente_de_curtose, set_coeficiente_de_curtose] = useState({valor: 0, curva: ''});
     let [barchart_data, set_barchart_data] = useState({intervalos: [], fi: []});
+    let [simetrica, setSimetric] = useState(false);
+    let [dadosSimetrica, setDadosSimetrica] = useState({media: 0, mediana: 0, moda: 0});
     
 
     if(classes && intervalos && fi){
@@ -184,7 +187,7 @@ const TabelasDeFrequenciaComIntervalo = ({classes, intervalos, fi}) => {
                         text={t('tdf.informacao.carcular')}
                         orient={'center'}
                         size={'large'}
-                        onClick={() => { carcularTabela(setProcesso, linhasValor, setInformacoes, [media, desvio_medio, variancia, desvio_padrao, moda, mediana, coeficiente_de_variacao, representacao], setInfos, t, setFooter, setTabela_mediana, setTabelaSeparatrizes, fonte, set_coeficiente_de_curtose, set_barchart_data)}}
+                        onClick={() => { carcularTabela(setProcesso, linhasValor, setInformacoes, [media, desvio_medio, variancia, desvio_padrao, moda, mediana, coeficiente_de_variacao, representacao], setInfos, t, setFooter, setTabela_mediana, setTabelaSeparatrizes, fonte, set_coeficiente_de_curtose, set_barchart_data, setSimetric, setDadosSimetrica)}}
                     />
                 </div>
             }
@@ -364,7 +367,10 @@ const TabelasDeFrequenciaComIntervalo = ({classes, intervalos, fi}) => {
                 </div>
                 {infos.length > 0 && <div className='tdf-resultado-informacoes'>{infos}</div>}
                 <div style={{display: 'flex'}}>
+                    <CurveChartAssimetric simetrica={simetrica} media={dadosSimetrica.media} mediana={dadosSimetrica.mediana} moda={dadosSimetrica.moda}/>
                     <CurveChart curva={coeficiente_de_curtose.curva} valor={coeficiente_de_curtose.valor} />
+                </div>
+                <div style={{display: 'flex', minHeight: 400}}>
                     <ChartBar intervalos={barchart_data.intervalos} frecuencia_absoluta={barchart_data.fi} />
                 </div>
             </div>

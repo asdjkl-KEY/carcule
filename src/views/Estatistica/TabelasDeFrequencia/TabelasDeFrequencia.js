@@ -311,6 +311,15 @@ const TabelasDeFrequencia = () => {
                             </tr>
                         })}
                     </tbody>
+                    <thead>
+                        <tr>
+                            <th>Total:</th>
+                            <th>{tdf.total_fi}</th>
+                            <th></th>
+                            <th>{tdf.total_fri}</th>
+                            <th></th>
+                        </tr>
+                    </thead>
                 </table>
                 {informacoes.length > 0 && <div className='tdf-resultado-informacoes'>{informacoes}</div>}
             </div>

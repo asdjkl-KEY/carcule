@@ -202,6 +202,10 @@ class TabelaDeDistribuicaoComIntervalo {
         this.coeficiente_de_variacao = (this.desvio_padrao/this.media)*100;
     }
     formatar(){
+        let simetrica = false;
+        if(this.media === this.mediana && this.mediana === this.moda){
+            simetrica = true;
+        };
         let dados = {
             lines: this.lines,
             tabela: {
@@ -214,6 +218,7 @@ class TabelaDeDistribuicaoComIntervalo {
                 fri: this.fri,
                 FRi: this.FRi
             },
+            simetrica,
             media: this.media,
             mediana: this.mediana,
             moda: this.moda,

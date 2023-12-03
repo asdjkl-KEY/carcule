@@ -1,5 +1,5 @@
 import TabelaDeDistribuicaoComIntervalo from "../../../../classes/TabelaDeDistribuicaoComIntervalo";
-function carcularTabela(setProcesso, linhasValor, setInformacoes, [media, desvio_medio, variancia, desvio_padrao, moda, mediana, coeficiente_de_variacao, representacao], setInfos, t, setFooter, setTabela_mediana, setTabelaSeparatrizes, fonte, set_coeficiente_de_curtose, set_barchart_data){
+function carcularTabela(setProcesso, linhasValor, setInformacoes, [media, desvio_medio, variancia, desvio_padrao, moda, mediana, coeficiente_de_variacao, representacao], setInfos, t, setFooter, setTabela_mediana, setTabelaSeparatrizes, fonte, set_coeficiente_de_curtose, set_barchart_data, setSimetric, setDadosSimetrica){
     setProcesso('calculando')
     let classes = linhasValor.map(e => e[0]);
     let intervalo = linhasValor.map(e => e[1]);
@@ -26,6 +26,15 @@ function carcularTabela(setProcesso, linhasValor, setInformacoes, [media, desvio
             <td><input value={(tdf.soma_para_variancia[i].toFixed(4)+'').replace('.',',')??0} readOnly={true}/></td>
         </tr>))
     }
+
+    // Se é simetrica ou não.
+
+    setSimetric(tdf.simetrica);
+    setDadosSimetrica({
+        media: tdf.media,
+        mediana: tdf.mediana,
+        moda: tdf.moda
+    });
 
 
     // Coeficiente de curtose

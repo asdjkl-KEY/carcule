@@ -272,6 +272,8 @@ class TabelaDeDistribuicao {
         } else {
             dados.representacao = t('tdf.opcoes.represent.ruim')
         }
+        dados.total_fi = this.somarColuna("fi").toFixed(2);
+        dados.total_fri = this.somarColuna("fri").toFixed(2);
         return dados;
     }
 }

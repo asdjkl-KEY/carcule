@@ -1,18 +1,36 @@
 import React from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Cell } from 'recharts';
 
-
-
-const ChartBar = ({intervalos, frecuencia_absoluta}) => {
+const ChartBar = ({ intervalos, frecuencia_absoluta }) => {
   let data = [];
 
-  for(let i=0; i<intervalos.length; i++){
+  const generateRandomColor = () => {
+    return '#' + Math.floor(Math.random() * 16777215).toString(16);
+  };
+
+  for (let i = 0; i < intervalos.length; i++) {
     let intervalo = intervalos[i];
     let fi = frecuencia_absoluta[i];
     data.push({
       name: `de ${intervalo[0]} até ${intervalo[1]}`,
-      valor: fi
-    })
+      valor: fi,
+      color: generateRandomColor(), 
+    });
+  }
+
+  const CustomLegend = () => {
+    return (
+      <div>
+        <h4>Legenda</h4>
+        <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap'}}>
+        {data.map((e, i) => (
+          <div key={i}>
+            <span style={{ color: e.color, marginLeft: 16, marginTop: 16 }}>{e.name}</span>
+          </div>
+        ))}
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -31,8 +49,12 @@ const ChartBar = ({intervalos, frecuencia_absoluta}) => {
       <XAxis dataKey="name" />
       <YAxis />
       <Tooltip />
-      <Legend />
-      <Bar dataKey="valor" fill="#905010" barSize={48} aria-setsize={48} />
+      <Legend content={<CustomLegend />} />
+      <Bar dataKey="valor" barSize={48} aria-setsize={48}>
+        {data.map((entry, index) => (
+          <Cell key={`cell-${index}`} fill={entry.color} />
+        ))}
+      </Bar>
     </BarChart>
   );
 };
